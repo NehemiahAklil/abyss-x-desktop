@@ -1,0 +1,43 @@
+{
+  "name": "nothing-x-desktop-unofficial",
+  "version": "0.1.0-alpha",
+  "main": "index.js",
+  "scripts": {
+    "start": "electron .",
+    "pack": "electron-builder --dir",
+    "build": "electron-builder",
+    "make_icon": "electron-icon-maker -i assets/base/icon.png -o assets/"
+  },
+  "build": {
+    "appId": "org.wegegtatech.figma-native",
+    "productName": "figma-native",
+    "directories": {
+      "output": "dist"
+    },
+    "files": "!assets${/*}",
+    "win": {},
+    "mac": {
+      "category": "com.figma.design.web"
+    },
+    "linux": {
+      "category": "Graphics",
+      "desktop": {
+        "Icon": "build/icon.png",
+        "Name": "Figma Native",
+        "Comment": "A electron wrapper for figma for native use on linux",
+        "Categories": "GNOME;GTK;Network;InstantMessaging"
+      }
+    }
+  },
+  "keywords": [],
+  "author": "Nehemiah Aklil",
+  "license": "ISC",
+  "description": "Nothing x for CMF, Nothing gadgets an unofficial desktop experience of nothing x app",
+  "devDependencies": {
+    "electron": "^37.2.5"
+  },
+  "dependencies": {
+    "electron-builder": "^26.0.12",
+    "electron-icon-maker": "^0.0.5"
+  }
+}
