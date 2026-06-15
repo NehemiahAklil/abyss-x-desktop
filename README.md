@@ -1,45 +1,166 @@
-# Nothing X Desktop [unofficial]
+# Abyss X [unofficial]
 
-![Ear(web) Logo](res/icons/256x256.png)
+<p align="center">
+  <img src="res/icons/256x256.png" width="120" alt="Abyss X logo" />
+</p>
 
-# Compatibility
+<p align="center">
+  <a href="https://github.com/NehemiahAklil/nothing-x-desktop/releases/latest">
+    <img src="https://img.shields.io/github/v/release/NehemiahAklil/nothing-x-desktop?label=Download&style=flat-square" alt="Latest Release" />
+  </a>
+  <a href="LICENSE">
+    <img src="https://img.shields.io/badge/License-GPL--3.0-blue?style=flat-square" alt="License: GPL-3.0" />
+  </a>
+  <a href="https://github.com/NehemiahAklil/nothing-x-desktop/issues">
+    <img src="https://img.shields.io/github/issues/NehemiahAklil/nothing-x-desktop?style=flat-square" alt="Issues" />
+  </a>
+  <img src="https://img.shields.io/badge/platform-Linux%20%7C%20Windows%20%7C%20macOS-lightgrey?style=flat-square" alt="Platforms" />
+</p>
 
-This an electron desktop unofficial nothing x desktop that is compatible with the following devices:
+<p align="center">
+  An unofficial desktop app for <strong>Nothing &amp; CMF earbuds</strong>.<br />
+  Electron wrapper around <a href="https://github.com/radiance-project/ear-web">ear (web)</a> — no browser required.
+</p>
 
-- Nothing ear (1)
-- Nothing ear (stick)
-- Nothing ear (2)
-- CMF Buds Pro
-- CMF Buds
-- Nothing Ear
-- CMF Buds Pro 2
+---
 
-# Usage
+## Supported devices
 
-1. Use a Chromium-based browser (Chrome, Edge, Brave, etc.) based on version 117+
-2. Go to [this link](https://earweb.bttl.xyz/)
+| Device | Status |
+|---|---|
+| Nothing ear (1) | Supported |
+| Nothing ear (stick) | Supported |
+| Nothing ear (2) | Supported |
+| Nothing Ear | Supported |
+| Nothing Ear (a) | Supported |
+| Nothing Ear (open) | Supported |
+| CMF Buds | Supported |
+| CMF Buds Pro | Supported |
+| CMF Buds Pro 2 | Supported |
 
 ## Features
 
-- Battery percentage
-- Equalizer settings with custom Equalizer and Advanced EQ toggle for compatibles devices.
-- Quick Settings (In-Ear Detection, Low Latency Mode, Firmware version), Personalized ANC toggle and Ear Tip Fit Test
-- Bass Enhance and ANC settings
+- Battery percentage (buds + case)
+- Equalizer — custom EQ and Advanced EQ for compatible devices
+- ANC settings (Off / Active / Transparency / Personalized ANC)
+- Bass Enhance
+- In-Ear Detection, Low Latency Mode, Ear Tip Fit Test
 - Gestures
-- Find my Earbuds
-- Case Battery Status LED (Ear (1) only)
+- Find My Earbuds
+- Case Battery Status LED (ear (1) only)
+- Firmware version display
 
-## Credits and Acknowledgements
+---
 
-- Most of the code is from [Radiance Project](https://github.com/radiance-project/ear-web)
-- RapidZapper for the idea and backend work
-- [Bendix](https://www.mrbrickstar.de/) for the frontend work
-- [DerrenGoneDigital](https://twitter.com/DerrenDigital) for the logo
+## Installation
 
-## LEGAL
+### Download a release (recommended)
 
-This application and code is published under the GNU General Public License v3.0. (https://github.com/radiance-project/ear-pc/blob/main/LICENSE)
+1. Go to the [Releases page](https://github.com/NehemiahAklil/nothing-x-desktop/releases/latest).
+2. Download the file for your platform:
 
-Nothing Technology Limited or any of its affiliates, subsidiaries, or related entities (collectively, “Nothing Technology”) is a valid licensee and can use this app for any purpose, including commercial purposes, without compensation to the developers of this app. Nothing Technology is not required to comply with the terms of the GNU General Public License v3.0.
+| Platform | File |
+|---|---|
+| Linux (x64) | `Abyss-X-*-linux-x64.AppImage` |
+| Linux (arm64) | `Abyss-X-*-linux-arm64.AppImage` |
+| Linux (Debian/Ubuntu) | `Abyss-X-*-amd64.deb` |
+| Windows (x64) | `Abyss-X-*-win-x64.exe` |
+| macOS (Intel) | `Abyss-X-*-mac-x64.dmg` |
+| macOS (Apple Silicon) | `Abyss-X-*-mac-arm64.dmg` |
 
-This app is developed by RapidZapper and Bendix and is not affiliated with, sponsored by, or endorsed by Nothing Technology. The developers of this app take no responsibility for the accuracy or completeness of the content and materials provided in this app. The content and materials contained in this app, including but not limited to text, graphics, logos, images, and audio/visual materials, are proprietary to Nothing Technology Limited, 80 Cheapside, London EC2V 6EE and are protected by copyright, trademark, and other intellectual property laws. These materials may not be used without the express written permission of Nothing Technology. Nothing Technology reserves all rights.
+#### Linux — AppImage
+```bash
+chmod +x Abyss-X-*.AppImage
+./Abyss-X-*.AppImage
+```
+
+#### Linux — .deb
+```bash
+sudo dpkg -i Abyss-X-*-amd64.deb
+```
+
+---
+
+## Build from source
+
+### Prerequisites
+
+- [Node.js](https://nodejs.org/) 18+
+- [pnpm](https://pnpm.io/) (`npm install -g pnpm`)
+- A Chromium-based Electron build environment
+
+```bash
+git clone https://github.com/NehemiahAklil/nothing-x-desktop.git
+cd nothing-x-desktop
+pnpm install
+pnpm approve-builds electron electron-builder electron-winstaller
+```
+
+### Run (development)
+
+```bash
+pnpm start
+```
+
+### Build distributables
+
+```bash
+# Current platform
+pnpm build
+
+# Specific platforms
+pnpm build:linux
+pnpm build:win
+pnpm build:mac
+
+# All platforms (requires cross-compilation tools)
+pnpm build:all
+```
+
+Output goes to `dist/`.
+
+---
+
+## Usage
+
+1. **Pair your earbuds** in your OS Bluetooth settings first (the app uses the system's Bluetooth stack).
+2. Launch Abyss X.
+3. Click **Connect** — a picker lists your paired Bluetooth serial devices.
+4. Select your earbuds. The app connects and opens the control panel for your device.
+
+### Linux — Bluetooth permissions
+
+On Linux, Web Serial access to Bluetooth SPP ports may require your user to be in the `dialout` group:
+
+```bash
+sudo usermod -aG dialout $USER
+# Log out and back in for this to take effect.
+```
+
+If you see "No paired earbuds found", make sure your buds are paired (not just connected) and appear in `bluetoothctl paired-devices`.
+
+---
+
+## Contributing
+
+Bug reports and pull requests are welcome. See [CONTRIBUTING.md](CONTRIBUTING.md) for guidelines.
+
+---
+
+## Credits
+
+- [RapidZapper](https://github.com/radiance-project) — protocol reverse engineering and backend
+- [Bendix](https://www.mrbrickstar.de/) — frontend design (ear (web))
+- [DerrenGoneDigital](https://twitter.com/DerrenDigital) — logo
+- [Radiance Project / ear-web](https://github.com/radiance-project/ear-web) — web frontend bundled in this app
+- [Nehemiah Aklil](https://github.com/NehemiahAklil) — Electron wrapper
+
+---
+
+## Legal
+
+This application is published under the [GNU General Public License v3.0](LICENSE).
+
+Nothing Technology Limited or any of its affiliates is a valid licensee and may use this application for any purpose, including commercial purposes, without compensation to the developers.
+
+This app is not affiliated with, sponsored by, or endorsed by Nothing Technology Limited. All product names, logos, and trademarks are property of their respective owners.
