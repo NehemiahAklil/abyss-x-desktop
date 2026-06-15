@@ -1,43 +1,130 @@
 {
-  "name": "nothing-x-desktop-unofficial",
-  "version": "0.1.0-alpha",
+  "name": "abyss-x-desktop",
+  "version": "0.1.0",
   "main": "index.js",
+  "description": "Unofficial desktop app for Nothing & CMF earbuds — Electron wrapper for ear (web)",
+  "author": {
+    "name": "Nehemiah Aklil",
+    "email": "nehemiahaklil@gmail.com"
+  },
+  "license": "GPL-3.0-only",
+  "homepage": "https://github.com/NehemiahAklil/nothing-x-desktop",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/NehemiahAklil/nothing-x-desktop.git"
+  },
+  "bugs": {
+    "url": "https://github.com/NehemiahAklil/nothing-x-desktop/issues"
+  },
+  "keywords": [
+    "nothing",
+    "cmf",
+    "earbuds",
+    "bluetooth",
+    "electron"
+  ],
   "scripts": {
     "start": "electron .",
-    "pack": "electron-builder --dir",
     "build": "electron-builder",
-    "make_icon": "electron-icon-maker -i assets/base/icon.png -o assets/"
+    "build:linux": "electron-builder --linux AppImage",
+    "build:deb": "electron-builder --linux deb",
+    "build:win": "electron-builder --win",
+    "build:mac": "electron-builder --mac",
+    "build:all": "electron-builder -mwl"
   },
   "build": {
-    "appId": "org.wegegtatech.figma-native",
-    "productName": "figma-native",
+    "appId": "xyz.bttl.earweb.unofficial",
+    "productName": "Abyss X",
+    "copyright": "Copyright © 2024 Nehemiah Aklil. Frontend © RapidZapper & Bendix (GPLv3)",
+    "npmRebuild": false,
+    "nodeGypRebuild": false,
     "directories": {
-      "output": "dist"
+      "output": "dist",
+      "buildResources": "build"
     },
-    "files": "!assets${/*}",
-    "win": {},
-    "mac": {
-      "category": "com.figma.design.web"
-    },
+    "files": [
+      "index.js",
+      "preload.js",
+      "res/**/*"
+    ],
     "linux": {
-      "category": "Graphics",
+      "icon": "build/icons",
+      "category": "Audio",
+      "target": [
+        {
+          "target": "AppImage",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ],
       "desktop": {
-        "Icon": "build/icon.png",
-        "Name": "Figma Native",
-        "Comment": "A electron wrapper for figma for native use on linux",
-        "Categories": "GNOME;GTK;Network;InstantMessaging"
+        "entry": {
+          "Name": "Abyss X",
+          "Comment": "Unofficial desktop app for Nothing / CMF earbuds",
+          "Categories": "Audio;AudioVideo;Utility;"
+        }
       }
+    },
+    "win": {
+      "icon": "build/icon.ico",
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ]
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true
+    },
+    "mac": {
+      "icon": "build/icons/512x512.png",
+      "category": "public.app-category.utilities",
+      "target": [
+        {
+          "target": "dmg",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        },
+        {
+          "target": "zip",
+          "arch": [
+            "x64",
+            "arm64"
+          ]
+        }
+      ]
+    },
+    "dmg": {
+      "contents": [
+        {
+          "x": 130,
+          "y": 220
+        },
+        {
+          "x": 410,
+          "y": 220,
+          "type": "link",
+          "path": "/Applications"
+        }
+      ]
+    },
+    "publish": {
+      "provider": "github",
+      "releaseType": "release"
     }
   },
-  "keywords": [],
-  "author": "Nehemiah Aklil",
-  "license": "ISC",
-  "description": "Nothing x for CMF, Nothing gadgets an unofficial desktop experience of nothing x app",
   "devDependencies": {
-    "electron": "^37.2.5"
-  },
-  "dependencies": {
-    "electron-builder": "^26.0.12",
-    "electron-icon-maker": "^0.0.5"
+    "electron": "^37.2.5",
+    "electron-builder": "^26.0.12"
   }
 }

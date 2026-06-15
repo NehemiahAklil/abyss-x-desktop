@@ -1,0 +1,7 @@
+allowBuilds:
+  electron: true
+  electron-builder: true
+  electron-winstaller: true
+
+overrides:
+  "@electron/node-gyp": "npm:node-gyp@^10"
