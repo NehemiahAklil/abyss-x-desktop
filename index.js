@@ -3,6 +3,7 @@ const {
   BrowserWindow,
   protocol,
   ipcMain,
+  shell,
 } = require("electron");
 const path = require("path");
 const fs = require("fs");
@@ -134,9 +135,29 @@ function setupSerialHandlers(targetSession, win) {
     }
   });
 
-  // Grant the "serial" permission and any device the renderer requests.
-  targetSession.setPermissionCheckHandler(() => true);
-  targetSession.setDevicePermissionHandler(() => true);
+  // Only our own app:// origin may use Web Serial, and only the "serial"
+  // permission — everything else (camera, geolocation, notifications, etc.)
+  // is denied by default.
+  const isOwnOrigin = (origin) => {
+    try {
+      return new URL(origin).protocol === "app:";
+    } catch (_) {
+      return false;
+    }
+  };
+
+  targetSession.setPermissionCheckHandler(
+    (_webContents, permission, requestingOrigin) =>
+      permission === "serial" && isOwnOrigin(requestingOrigin)
+  );
+  targetSession.setPermissionRequestHandler(
+    (_webContents, permission, callback, details) => {
+      callback(permission === "serial" && isOwnOrigin(details.requestingUrl));
+    }
+  );
+  targetSession.setDevicePermissionHandler(
+    (details) => details.deviceType === "serial" && isOwnOrigin(details.origin)
+  );
 }
 
 function createWindow() {
@@ -148,13 +169,33 @@ function createWindow() {
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),
-      contextIsolation: false,
+      contextIsolation: true,
       nodeIntegration: false,
-      sandbox: false,
+      sandbox: true,
     },
   });
 
   setupSerialHandlers(win.webContents.session, win);
+
+  // Deny all new windows/popups; open external http(s) links in the OS browser.
+  win.webContents.setWindowOpenHandler(({ url }) => {
+    if (url.startsWith("http://") || url.startsWith("https://")) {
+      shell.openExternal(url);
+    }
+    return { action: "deny" };
+  });
+
+  // The app never navigates away from its own app:// origin — block any
+  // attempt (compromised renderer, malicious link) to load something else.
+  win.webContents.on("will-navigate", (event, url) => {
+    if (!url.startsWith("app://")) {
+      event.preventDefault();
+      if (url.startsWith("http://") || url.startsWith("https://")) {
+        shell.openExternal(url);
+      }
+    }
+  });
+
   win.loadURL("app://local/index.html");
 
   return win;
