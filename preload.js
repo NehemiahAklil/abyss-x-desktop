@@ -1,9 +1,10 @@
-// Preload runs in the renderer with Node access (contextIsolation is off so it
-// shares the page's window). Two jobs:
+// Preload runs isolated from the page (contextIsolation is on) with Node
+// access. Two jobs:
 //   1. Render a device picker when main asks the user to choose a serial port.
 //   2. Stub the legacy `eel` global (the old Python-backend list flow in
-//      control.js references it; the Web Serial flow never uses it).
-const { ipcRenderer } = require("electron");
+//      control.js references it; the Web Serial flow never uses it) and
+//      expose it into the page's world via contextBridge.
+const { ipcRenderer, contextBridge } = require("electron");
 
 // --- Bluetooth serial device picker ----------------------------------------
 function renderPortPicker(ports) {
@@ -113,20 +114,15 @@ ipcRenderer.on("serial:port-list", (_event, ports) => {
 });
 
 // --- Legacy `eel` stub ------------------------------------------------------
-// control.js calls eel.getDevices()(), eel.connectToDevice(), etc. Those belong
-// to the old Python desktop build and are never hit by the Web Serial path, but
-// we stub them so any stray reference doesn't throw a ReferenceError.
-if (typeof window !== "undefined" && typeof window.eel === "undefined") {
-  const noop = () => {};
-  const eelFn = () => {
-    const caller = () => Promise.resolve(undefined);
-    return caller;
-  };
-  window.eel = new Proxy(
-    {},
-    {
-      get: () => eelFn,
-      apply: () => noop,
-    }
-  );
-}
+// control.js calls eel.getDevices()(), eel.connectToDevice(mac),
+// eel.stopReceivingData(). Those belong to the old Python desktop build and
+// are never hit by the Web Serial path, but we stub them so any stray
+// reference doesn't throw a ReferenceError. contextBridge doesn't support
+// exposing Proxy objects, so the stub is a plain object with the exact
+// methods control.js calls.
+const eelNoop = () => Promise.resolve(undefined);
+contextBridge.exposeInMainWorld("eel", {
+  getDevices: () => eelNoop,
+  connectToDevice: () => eelNoop,
+  stopReceivingData: () => eelNoop,
+});
