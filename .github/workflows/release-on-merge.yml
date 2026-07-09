@@ -1,0 +1,66 @@
+name: Release on Merge
+
+on:
+  pull_request:
+    types:
+      - closed
+    branches:
+      - master
+
+concurrency:
+  group: release-on-merge
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Bump version and tag
+    if: >
+      github.event.pull_request.merged == true &&
+      (
+        contains(github.event.pull_request.labels.*.name, 'Feature') ||
+        contains(github.event.pull_request.labels.*.name, 'Bug') ||
+        contains(github.event.pull_request.labels.*.name, 'Hot Fix') ||
+        contains(github.event.pull_request.labels.*.name, 'Enhancement') ||
+        contains(github.event.pull_request.labels.*.name, 'Security')
+      )
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: master
+          fetch-depth: 0
+
+      - name: Determine version bump
+        id: bump
+        env:
+          LABELS: ${{ toJson(github.event.pull_request.labels.*.name) }}
+        run: |
+          echo "PR labels: $LABELS"
+          if echo "$LABELS" | grep -q '"Major"'; then
+            bump=major
+          elif echo "$LABELS" | grep -qE '"(Feature|Enhancement|Dev Task|Dev Process Optimization)"'; then
+            bump=minor
+          else
+            bump=patch
+          fi
+          echo "Resolved bump: $bump"
+          echo "bump=$bump" >> "$GITHUB_OUTPUT"
+
+      - name: Configure git identity
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+
+      - name: Bump version, commit, and tag
+        id: version
+        run: |
+          new_version=$(npm version "${{ steps.bump.outputs.bump }}" --no-git-tag-version | tr -d 'v')
+          echo "version=$new_version" >> "$GITHUB_OUTPUT"
+          git add package.json
+          git commit -m "chore: release v$new_version"
+          git tag "v$new_version"
+
+      - name: Push commit and tag
+        run: git push origin master "v${{ steps.version.outputs.version }}"
