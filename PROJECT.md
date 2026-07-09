@@ -22,7 +22,7 @@
 | `build/` | electron-builder icons and resources |
 | `.github/workflows/build.yml` | CI: builds Linux/Windows/macOS installers and publishes a GitHub Release on `v*` tags |
 | `.github/workflows/manage-issues.yml` | CI: closes issues referenced in a merged PR's commits once all their checkboxes are ticked |
-| `.github/workflows/release-on-merge.yml` | CI: on a merge to `master` carrying a release-worthy label (`Feature`/`Bug`/`Hot Fix`/`Enhancement`/`Security`), bumps `package.json`'s version, tags, and pushes — the tag push triggers `build.yml` |
+| `.github/workflows/release-on-merge.yml` | CI: on a merge to `master` carrying a release-worthy label (`Feature`/`Bug`/`Hot Fix`/`Enhancement`/`Security`), bumps `package.json`'s version, tags, pushes, and explicitly dispatches `build.yml` (a plain tag push made with the default `GITHUB_TOKEN` doesn't trigger other workflows — `workflow_dispatch` is required) |
 
 ## Notes
 
