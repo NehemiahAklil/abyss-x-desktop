@@ -37,9 +37,7 @@ jobs:
         run: pnpm approve-builds electron electron-builder electron-winstaller
 
       - name: Build AppImage + deb
-        run: pnpm build:linux && pnpm build:deb
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build:linux --publish never && pnpm build:deb --publish never
 
       - uses: actions/upload-artifact@v4
         with:
@@ -70,9 +68,7 @@ jobs:
         run: pnpm approve-builds electron electron-builder electron-winstaller || true
 
       - name: Build NSIS installer
-        run: pnpm build:win
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build:win --publish never
 
       - uses: actions/upload-artifact@v4
         with:
@@ -101,9 +97,7 @@ jobs:
         run: pnpm approve-builds electron electron-builder electron-winstaller || true
 
       - name: Build DMG + ZIP
-        run: pnpm build:mac
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: pnpm build:mac --publish never
 
       - uses: actions/upload-artifact@v4
         with:
