@@ -1,6 +1,6 @@
 {
   "name": "abyss-x-desktop",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "main": "index.js",
   "description": "Unofficial desktop app for Nothing & CMF earbuds — Electron wrapper for ear (web)",
   "author": {
