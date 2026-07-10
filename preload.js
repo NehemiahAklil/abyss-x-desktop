@@ -17,32 +17,38 @@ function renderPortPicker(ports) {
   Object.assign(overlay.style, {
     position: "fixed",
     inset: "0",
-    background: "rgba(0,0,0,0.6)",
+    background: "rgba(12,12,13,0.75)",
+    backdropFilter: "blur(8px)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
     zIndex: "2147483647",
-    fontFamily: "sans-serif",
+    fontFamily: "'AbyssSans', system-ui, sans-serif",
   });
 
   const panel = document.createElement("div");
   Object.assign(panel.style, {
-    background: "#2b2a28",
-    color: "#fff",
+    background: "#1B1D1F",
+    color: "#F5F5F2",
     width: "min(420px, 90vw)",
     maxHeight: "80vh",
     overflowY: "auto",
-    borderRadius: "16px",
-    padding: "20px",
-    boxShadow: "0 10px 40px rgba(0,0,0,0.5)",
+    border: "1px solid rgba(245,245,242,0.14)",
+    borderRadius: "20px",
+    padding: "24px",
+    boxShadow: "0 24px 80px rgba(0,0,0,0.65)",
   });
 
   const title = document.createElement("div");
   title.textContent = "Select your earbuds";
   Object.assign(title.style, {
-    fontSize: "1.15rem",
-    fontWeight: "bold",
-    marginBottom: "14px",
+    fontFamily: "'AbyssMono', ui-monospace, monospace",
+    fontSize: "11px",
+    letterSpacing: "0.18em",
+    textTransform: "uppercase",
+    color: "#9FA3A8",
+    textAlign: "center",
+    marginBottom: "16px",
   });
   panel.appendChild(title);
 
@@ -69,17 +75,18 @@ function renderPortPicker(ports) {
         display: "block",
         width: "100%",
         textAlign: "left",
-        padding: "12px 14px",
+        padding: "12px 18px",
         margin: "6px 0",
-        borderRadius: "10px",
-        border: "2px solid #444",
-        background: "#333",
-        color: "#fff",
+        borderRadius: "999px",
+        border: "1px solid rgba(245,245,242,0.14)",
+        background: "#0E0F10",
+        color: "#F5F5F2",
         cursor: "pointer",
-        fontSize: "0.95rem",
+        fontSize: "0.9rem",
+        transition: "border-color 200ms ease",
       });
-      btn.onmouseenter = () => (btn.style.borderColor = "#e82525");
-      btn.onmouseleave = () => (btn.style.borderColor = "#444");
+      btn.onmouseenter = () => (btn.style.borderColor = "#D71921");
+      btn.onmouseleave = () => (btn.style.borderColor = "rgba(245,245,242,0.14)");
       btn.onclick = () => finish(port.portId);
       panel.appendChild(btn);
     });
@@ -91,13 +98,19 @@ function renderPortPicker(ports) {
     display: "block",
     width: "100%",
     padding: "10px 14px",
-    marginTop: "12px",
-    borderRadius: "10px",
-    border: "none",
-    background: "#555",
-    color: "#fff",
+    marginTop: "14px",
+    borderRadius: "999px",
+    border: "1px solid rgba(245,245,242,0.35)",
+    background: "transparent",
+    color: "#F5F5F2",
     cursor: "pointer",
+    fontFamily: "'AbyssMono', ui-monospace, monospace",
+    fontSize: "11px",
+    letterSpacing: "0.2em",
+    textTransform: "uppercase",
   });
+  cancel.onmouseenter = () => (cancel.style.borderColor = "#D71921");
+  cancel.onmouseleave = () => (cancel.style.borderColor = "rgba(245,245,242,0.35)");
   cancel.onclick = () => finish("");
   panel.appendChild(cancel);
 

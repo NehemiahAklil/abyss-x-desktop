@@ -1,8 +1,8 @@
 var ctx = document.getElementById("myChart").getContext("2d");
 
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-gradient.addColorStop(0, 'rgb(255,0,0, 20%)');
-gradient.addColorStop(1, 'rgba(95,100,106, 0%)');
+gradient.addColorStop(0, 'rgba(215,25,33,0.30)');
+gradient.addColorStop(1, 'rgba(215,25,33,0)');
 
 
 var options;
@@ -144,9 +144,11 @@ function setBalanced(e) {
         labels: ["", "", ""],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: [6, 5, 6],
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }
@@ -165,9 +167,11 @@ function setBass(e) {
         labels: ["", "", ""],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: [10, 3, 4],
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }
@@ -185,9 +189,11 @@ function setTreble(e) {
         labels: ["", "", ""],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: [3, 3, 10],
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }
@@ -204,9 +210,11 @@ function setVoice(e) {
         labels: ["", "", ""],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: [3, 10, 3],
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }
@@ -224,9 +232,11 @@ function setAdvanced(e) {
         labels: ["", "", ""],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: [3, 10, 3],
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }
@@ -245,9 +255,11 @@ function setCustom(e) {
         labels: ["Bass", "Medium", "Treble"],
         datasets: [{
             backgroundColor: gradient,
+        borderColor: '#D71921',
+        lineTension: 0.4,
             label: '# of Votes',
             data: custom_values,
-            borderWidth: 1,
+            borderWidth: 2,
         },
         ]
     }

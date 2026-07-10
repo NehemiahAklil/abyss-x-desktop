@@ -7,8 +7,9 @@
 ## Tech Stack
 
 - Electron 37 (main process: `index.js`, preload: `preload.js`)
-- Bundled web frontend in `res/` (upstream `ear-web`, kept byte-identical
-  except for the Electron integration points)
+- Bundled web frontend in `res/` (upstream `ear-web` plus the Abyss X design
+  layer — `res/abyss.css` and presentation-only edits to the HTML/EQ chart
+  styling; functional JS is kept identical to upstream)
 - electron-builder for packaging (Linux AppImage/deb, Windows NSIS, macOS
   dmg/zip), published via GitHub Actions (`.github/workflows/build.yml`)
 
@@ -19,6 +20,7 @@
 | `index.js` | Electron main process — custom `app://` protocol serving `res/`, Web Serial port picker wiring, window creation, security policy (permissions, navigation, window-open guards) |
 | `preload.js` | Preload script — renders the serial port picker overlay, exposes a legacy `eel` stub via `contextBridge` for `res/js/control.js` |
 | `res/` | Bundled `ear-web` frontend (HTML/JS/CSS/assets), served over `app://` |
+| `res/abyss.css` | Abyss X design system (tokens, fonts, component restyles) loaded after `global.css` on every page — presentation only, no functional hooks |
 | `build/` | electron-builder icons and resources |
 | `.github/workflows/build.yml` | CI: builds Linux/Windows/macOS installers and publishes a GitHub Release on `v*` tags |
 | `.github/workflows/manage-issues.yml` | CI: closes issues referenced in a merged PR's commits once all their checkboxes are ticked |
