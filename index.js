@@ -161,11 +161,13 @@ function setupSerialHandlers(targetSession, win) {
 }
 
 function createWindow() {
+  // Device pages render a fixed 800x710 layout; size the window so they are
+  // never clipped.
   const win = new BrowserWindow({
-    width: 480,
-    height: 820,
+    width: 840,
+    height: 790,
     minWidth: 380,
-    backgroundColor: "#21201f",
+    backgroundColor: "#0C0C0D",
     autoHideMenuBar: true,
     webPreferences: {
       preload: path.join(__dirname, "preload.js"),

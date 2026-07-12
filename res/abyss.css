@@ -1,0 +1,322 @@
+/* ============================================================================
+   ABYSS X — desktop design layer
+   Loaded after global.css. Pure presentation: every element ID, class hook,
+   and JS-toggled inline style the frontend scripts rely on is left intact.
+   Hex #1B1D1F stays the card surface because transitions.js writes it inline.
+   ========================================================================== */
+
+/* ---- Fonts (bundled in ./fonts) ---------------------------------------- */
+
+@font-face {
+    font-family: 'AbyssDot';
+    src: url('./fonts/ndot_55.otf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'AbyssDot';
+    src: url('./fonts/ndot_55_bold.otf');
+    font-weight: 700;
+}
+
+@font-face {
+    font-family: 'AbyssMono';
+    src: url('./fonts/lettera_monoll_regular.otf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'AbyssMono';
+    src: url('./fonts/lettera_monoll_medium.otf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'AbyssSans';
+    src: url('./fonts/space_grotesk_regular.ttf');
+    font-weight: 400;
+}
+
+@font-face {
+    font-family: 'AbyssSans';
+    src: url('./fonts/space_grotesk_medium.ttf');
+    font-weight: 500;
+}
+
+@font-face {
+    font-family: 'AbyssSans';
+    src: url('./fonts/space_grotesk_bold.ttf');
+    font-weight: 700;
+}
+
+/* ---- Tokens -------------------------------------------------------------- */
+
+:root {
+    --ax-canvas: #0C0C0D;
+    --ax-surface: #1B1D1F;      /* keep: transitions.js writes this inline */
+    --ax-surface-2: #26282B;
+    --ax-inset: #0E0F10;
+    --ax-line: rgba(245, 245, 242, 0.08);
+    --ax-line-strong: rgba(245, 245, 242, 0.14);
+    --ax-text: #F5F5F2;
+    --ax-muted: #9FA3A8;
+    --ax-red: #D71921;
+    --ax-red-dim: rgba(215, 25, 33, 0.28);
+    --ax-dot: 'AbyssDot', 'Ndot-55', sans-serif;
+    --ax-mono: 'AbyssMono', 'NothingNormal', ui-monospace, monospace;
+    --ax-sans: 'AbyssSans', 'NothingNormal2', system-ui, sans-serif;
+}
+
+/* ---- Canvas: near-black with a faint dot-matrix grid --------------------- */
+
+html {
+    background-color: var(--ax-canvas);
+    background-image: radial-gradient(rgba(245, 245, 242, 0.05) 1px, transparent 1.2px);
+    background-size: 24px 24px;
+}
+
+body {
+    color: var(--ax-text);
+    font-family: var(--ax-sans);
+}
+
+::selection {
+    background: var(--ax-red);
+    color: #fff;
+}
+
+:focus-visible {
+    outline: 2px solid var(--ax-red);
+    outline-offset: 2px;
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--ax-surface-2);
+    border-radius: 999px;
+    border: 2px solid var(--ax-canvas);
+}
+
+/* ---- Type roles ----------------------------------------------------------
+   .text-md is the class every card header already carries (NOISE CONTROL,
+   EQUALIZER, QUICK SETTINGS, popup titles) but global.css never defined it —
+   it becomes the uppercase mono eyebrow of the system. */
+
+.text-md {
+    font-family: var(--ax-mono);
+    font-size: 11px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--ax-muted);
+}
+
+#prod_name {
+    font-family: var(--ax-dot) !important;
+    letter-spacing: 0.05em;
+}
+
+/* Segmented-control captions (NOISE CANCELLATION / TRANSPARENCY / OFF,
+   LOW / HIGH / ADAPTIVE stage labels) */
+.text-\[10px\] {
+    font-family: var(--ax-mono);
+    font-size: 9px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ax-muted);
+}
+
+/* Battery readouts (40% L / 40% R / 40% CASE) */
+#battery-l,
+#battery-r,
+#battery-c {
+    font-family: var(--ax-mono);
+    font-size: 11px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ax-muted);
+}
+
+/* Footer disclaimer */
+.text-\[8px\] {
+    font-family: var(--ax-mono);
+    font-size: 8px;
+    letter-spacing: 0.04em;
+    color: rgba(159, 163, 168, 0.55);
+    line-height: 1.6;
+}
+
+/* ---- Cards ---------------------------------------------------------------
+   Every dark panel already uses bg-[#1B1D1F]; give it edge definition. */
+
+.bg-\[\#1B1D1F\] {
+    border: 1px solid var(--ax-line);
+    border-radius: 20px;
+    box-shadow: inset 0 1px 0 rgba(245, 245, 242, 0.04);
+}
+
+/* Segmented pill tracks (ANC selector, bass selector, strength dots) */
+.grid.bg-black {
+    background-color: var(--ax-inset);
+    border: 1px solid var(--ax-line);
+}
+
+/* ---- Buttons -------------------------------------------------------------
+   EQ presets: JS owns background/color inline (white = active, black =
+   inactive); the shell — type, border, motion — is ours. */
+
+.eq-button {
+    font-family: var(--ax-mono);
+    font-size: 11px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    border: 1px solid var(--ax-line-strong) !important;
+    border-style: solid !important;
+    transition: border-color 200ms ease, transform 150ms ease;
+}
+
+.eq-button:hover {
+    border-color: var(--ax-red) !important;
+}
+
+.eq-button:active {
+    transform: scale(0.97);
+}
+
+/* Ring actions: retune the red-900 utilities to signal red */
+.border-red-900 {
+    border-color: var(--ax-red);
+}
+
+.text-red-900 {
+    color: var(--ax-red);
+}
+
+.hover\:bg-red-900:hover {
+    background-color: var(--ax-red);
+}
+
+#ring_button-c,
+#ring_button-l,
+#ring_button-r {
+    font-family: var(--ax-mono);
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    border-width: 1px;
+    padding-top: 0.4rem;
+    padding-bottom: 0.4rem;
+}
+
+/* ---- Battery bars -------------------------------------------------------- */
+
+#battery_bar_l,
+#battery_bar_r,
+#battery_bar {
+    background-color: rgba(245, 245, 242, 0.12);
+    border-radius: 999px;
+    height: 4px;
+    overflow: hidden;
+}
+
+#battery_bar_fill_l,
+#battery_bar_fill_r,
+#battery_bar_fill_c {
+    height: 4px;
+    border-radius: 999px;
+}
+
+/* ---- Switches: red track when on, Nothing OS style ----------------------- */
+
+.settings-switch-button {
+    background-color: var(--ax-surface-2);
+    border: 1px solid var(--ax-line);
+}
+
+.settings-switch-button:has(.settings-switch-checkbox:checked) {
+    background-color: var(--ax-red);
+    border-color: var(--ax-red);
+}
+
+.settings-switch-indicator {
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.5);
+}
+
+.settings-switch-label {
+    font-size: 12px;
+    letter-spacing: 0.02em;
+    color: var(--ax-text);
+}
+
+/* ---- White selector pill (active ANC segment) ---------------------------- */
+
+#selector,
+#selector_bass {
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.45);
+}
+
+/* ---- Popup ---------------------------------------------------------------- */
+
+#popup_content {
+    border: 1px solid var(--ax-line-strong);
+    border-radius: 20px;
+    box-shadow: 0 24px 80px rgba(0, 0, 0, 0.65);
+}
+
+/* ---- Page arrows / back chevron ------------------------------------------ */
+
+#left-arrow svg,
+#right-arrow svg,
+#back {
+    opacity: 0.65;
+    transition: opacity 200ms ease;
+}
+
+#left-arrow svg:hover,
+#right-arrow svg:hover {
+    opacity: 1;
+    fill: var(--ax-red);
+}
+
+/* ---- Firmware / settings rows -------------------------------------------- */
+
+.text-\[12px\] {
+    letter-spacing: 0.02em;
+}
+
+/* Custom EQ digit readout on advanced pages */
+#custom_eq_indicator {
+    font-family: var(--ax-mono);
+    font-size: 11px;
+    color: var(--ax-muted);
+}
+
+/* ---- Device picker (MainControl_nothing_connected) ------------------------ */
+
+#scan_button-c {
+    font-family: var(--ax-mono);
+    font-size: 11px;
+    letter-spacing: 0.24em;
+    text-indent: 0.24em;
+    text-transform: uppercase;
+    border-color: rgba(245, 245, 242, 0.35);
+    border-width: 1px;
+    transition: border-color 200ms ease, background-color 200ms ease;
+}
+
+#scan_button-c:hover {
+    border-color: var(--ax-red);
+    background-color: var(--ax-red);
+}
+
+#device_container {
+    font-size: 13px;
+}

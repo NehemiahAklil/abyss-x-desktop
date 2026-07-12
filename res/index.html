@@ -7,107 +7,170 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Abyss X</title>
+    <title>Abyss X Desktop</title>
     <link rel="icon" href="icons/16x16.png" />
     <link rel="manifest" href="/manifest.json" crossorigin="use-credentials" />
     <link href="./global.css" rel="stylesheet" />
+    <link href="./abyss.css" rel="stylesheet" />
     <style>
+        body {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 48px 24px;
+            box-sizing: border-box;
+        }
+
         #announcement-banner {
-            background-color: red;
-            color: white;
-            padding: 10px 20px;
             display: none;
-            position: relative;
+            position: fixed;
+            top: 24px;
             left: 50%;
-            top: 20px;
             transform: translateX(-50%);
-            border-radius: 15px;
-            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.3);
+            background-color: #1B1D1F;
+            border: 1px solid rgba(245, 245, 242, 0.14);
+            border-left: 3px solid #D71921;
+            color: #F5F5F2;
+            padding: 10px 20px;
+            border-radius: 12px;
             text-align: center;
             width: auto;
             z-index: 1000;
+            font-size: 13px;
         }
 
         #announcement-date {
-            font-weight: bold;
-            margin-right: 15px;
+            font-family: 'AbyssMono', monospace;
+            font-size: 10px;
+            letter-spacing: 0.14em;
+            color: #9FA3A8;
+            margin-bottom: 2px;
         }
 
         #logo_container {
-            margin-top: 40px; 
-            margin-bottom: 20px;
             text-align: center;
+            margin-bottom: 40px;
         }
 
             #logo_container img {
-                max-width: 150px;
+                max-width: 96px;
+                margin-left: auto;
+                margin-right: auto;
+                margin-bottom: 28px;
             }
 
         #name_container {
-            font-size: 1.5rem;
-            font-weight: bold;
-            margin-bottom: 40px;
+            font-family: 'AbyssDot', sans-serif;
+            font-size: 3rem;
+            line-height: 1;
+            letter-spacing: 0.06em;
             text-align: center;
+            color: #F5F5F2;
         }
+
+            #name_container .wordmark-dot {
+                color: #D71921;
+            }
+
+            #name_container .wordmark-sub {
+                display: block;
+                font-family: 'AbyssMono', monospace;
+                font-size: 11px;
+                letter-spacing: 0.55em;
+                text-indent: 0.55em; /* balances the trailing tracking */
+                color: #9FA3A8;
+                margin-top: 14px;
+                text-transform: uppercase;
+            }
 
         #scan_button {
             text-align: center;
-            margin: 20px auto;
-            width: 200px;
+            margin: 0 auto 56px;
+            width: 220px;
         }
 
         #scan_button-c {
-            padding: 10px 20px;
-            border: 2px solid black;
-            border-radius: 25px;
+            font-family: 'AbyssMono', monospace;
+            font-size: 12px;
+            letter-spacing: 0.28em;
+            text-indent: 0.28em;
+            text-transform: uppercase;
+            padding: 14px 20px;
+            border: 1px solid rgba(245, 245, 242, 0.35);
+            border-radius: 999px;
             cursor: pointer;
-            font-size: 1rem;
-            background-color: #333;
-            transition: transform 0.15s ease-in-out;
+            background-color: transparent;
+            color: #F5F5F2;
+            transition: border-color 200ms ease, background-color 200ms ease, color 200ms ease, transform 150ms ease;
         }
 
             #scan_button-c:hover {
-                transform: scale(1.05);
-                border: 2px solid #e82525
+                border-color: #D71921;
+                background-color: #D71921;
+                color: #fff;
             }
 
-
+            #scan_button-c:active {
+                transform: scale(0.97);
+            }
 
         .faq-container {
-            margin-left: auto; 
-            margin-right: auto; 
-
-            background-color: #333;
-            padding: 15px;
-            border-radius: 10px;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
-            width: 60%;
-            overflow-y: auto;
-            font-size: 0.9rem;
-            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out;
+            width: min(560px, 100%);
+            margin: 0 auto;
         }
 
-            .faq-container summary {
-                font-size: 1rem;
-                font-weight: bold;
-                cursor: pointer;
+            .faq-container details {
+                background-color: #1B1D1F;
+                border: 1px solid rgba(245, 245, 242, 0.08);
+                border-radius: 14px;
+                padding: 14px 18px;
+                margin-bottom: 10px;
+                transition: border-color 200ms ease;
             }
 
-            .faq-container details {
-                margin-bottom: 10px;
+            .faq-container details[open] {
+                border-color: rgba(245, 245, 242, 0.2);
             }
+
+            .faq-container summary {
+                font-family: 'AbyssMono', monospace;
+                font-size: 11px;
+                letter-spacing: 0.1em;
+                text-transform: uppercase;
+                color: #9FA3A8;
+                cursor: pointer;
+                list-style: none;
+            }
+
+                .faq-container summary::-webkit-details-marker {
+                    display: none;
+                }
+
+                .faq-container summary::before {
+                    content: "+";
+                    color: #D71921;
+                    margin-right: 10px;
+                }
+
+            .faq-container details[open] summary::before {
+                content: "\2212"; /* minus sign */
+            }
+
+                .faq-container summary:hover {
+                    color: #F5F5F2;
+                }
 
             .faq-container p {
-                margin: 10px 0;
-                font-size: 0.9rem;
-            }
-
-            .faq-container summary:hover {
-                color: #e82525;
+                margin: 12px 0 4px;
+                font-size: 13px;
+                line-height: 1.6;
+                color: #C9CCD0;
             }
 
             .faq-container a {
-                color: #e82525;
+                color: #D71921;
                 text-decoration: none;
             }
 
@@ -117,7 +180,7 @@
     </style>
 </head>
 
-<body style="width: 80%; height: 710px; position: absolute; background: #21201f;  left: 50%; -ms-transform: translate(-50%, 0); transform: translate(-50%, 0); color:white;">
+<body>
 
     <div id="announcement-banner">
         <div id="announcement-date">2024-10-05</div>
@@ -125,8 +188,11 @@
     </div>
 
     <div id="logo_container">
-        <img src="./icons/512x512.png" alt="Logo" style="margin-left: auto; margin-right: auto;" />
-        <div id="name_container">Abyss X</div>
+        <img src="./icons/512x512.png" alt="Abyss X Desktop logo" />
+        <div id="name_container">
+            ABYSS X<span class="wordmark-dot">.</span>
+            <span class="wordmark-sub">Desktop</span>
+        </div>
     </div>
 
     <div id="scan_button" onclick="scanNewDevicesSerial()">
@@ -136,12 +202,12 @@
     <div class="faq-container">
         <details>
             <summary>Which browsers are supported?</summary>
-            <p>Abyss X is a desktop app — no browser needed. Just launch and connect.</p>
+            <p>Abyss X Desktop is a desktop app — no browser needed. Just launch and connect.</p>
         </details>
         <details>
             <summary>Which devices are supported?</summary>
             <p>
-                Abyss X supports audio products from Nothing and CMF By Nothing, at this time:<br />
+                Abyss X Desktop supports audio products from Nothing and CMF By Nothing, at this time:<br />
                 - Nothing ear (1)<br />
                 - Nothing ear (stick)<br />
                 - Nothing ear (2)<br />
@@ -176,7 +242,7 @@
             const currentDate = new Date();
             const diffInDays = (currentDate - bannerDate) / (1000 * 60 * 60 * 24);
 
-            console.log(diffInDays);    
+            console.log(diffInDays);
             if (diffInDays <= 7) {
                 banner.style.display = 'inline-block';
             }
