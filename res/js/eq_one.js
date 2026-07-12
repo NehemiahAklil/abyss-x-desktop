@@ -56,7 +56,7 @@ var chart;
 var ctx = document.getElementById("myChart").getContext("2d"); 
 
 var gradient = ctx.createLinearGradient(0, 0, 0, 400);
-    gradient.addColorStop(0, '	rgba(215,25,33,0.30)');   
+    gradient.addColorStop(0, 'rgba(215,25,33,0.30)');
     gradient.addColorStop(1, 'rgba(215,25,33,0)');
 
 var data = {
