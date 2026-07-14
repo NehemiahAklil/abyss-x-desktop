@@ -22,6 +22,7 @@
 | `res/` | Bundled `ear-web` frontend (HTML/JS/CSS/assets), served over `app://` |
 | `res/abyss.css` | Abyss X design system (tokens, fonts, component restyles) loaded after `global.css` on every page — presentation only, no functional hooks |
 | `build/` | electron-builder icons and resources |
+| `scripts/install_abyss_x.sh` | Interactive install/uninstall script for the packaged Linux AppImage — per-user or system-wide, pulls its icon/`.desktop` entry straight out of the AppImage rather than shipping a separate copy. Looks for the AppImage next to itself, then `../dist/`, then the current directory. Ships inside the Linux release tarball alongside the AppImage (pre-renamed to `AbyssX`, no extension) |
 | `.github/workflows/build.yml` | CI: builds Linux/Windows/macOS installers and publishes a GitHub Release on `v*` tags |
 | `.github/workflows/manage-issues.yml` | CI: closes issues referenced in a merged PR's commits once all their checkboxes are ticked |
 | `.github/workflows/release-on-merge.yml` | CI: on a merge to `master` carrying a release-worthy label (`Feature`/`Bug`/`Hot Fix`/`Enhancement`/`Security`), bumps `package.json`'s version, tags, pushes, and explicitly dispatches `build.yml` (a plain tag push made with the default `GITHUB_TOKEN` doesn't trigger other workflows — `workflow_dispatch` is required) |
