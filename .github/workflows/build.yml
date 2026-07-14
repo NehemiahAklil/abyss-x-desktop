@@ -39,12 +39,26 @@ jobs:
       - name: Build AppImage + deb
         run: pnpm build:linux --publish never && pnpm build:deb --publish never
 
+      - name: Package Linux tarball (installer script + AppImage)
+        run: |
+          STAGE="$(mktemp -d)/abyss-x-linux"
+          mkdir -p "$STAGE"
+          cp dist/*.AppImage "$STAGE/$BIN_FILENAME"
+          chmod +x "$STAGE/$BIN_FILENAME"
+          cp scripts/install_abyss_x.sh "$STAGE/"
+          chmod +x "$STAGE/install_abyss_x.sh"
+          VERSION="$(node -p "require('./package.json').version")"
+          tar -czf "dist/Abyss-X-${VERSION}-linux.tar.gz" -C "$(dirname "$STAGE")" "$(basename "$STAGE")"
+        env:
+          BIN_FILENAME: AbyssX
+
       - uses: actions/upload-artifact@v4
         with:
           name: linux-dist
           path: |
             dist/*.AppImage
             dist/*.deb
+            dist/*.tar.gz
           if-no-files-found: warn
 
   build-windows:
@@ -130,6 +144,20 @@ jobs:
         with:
           draft: ${{ github.event_name == 'workflow_dispatch' && inputs.draft }}
           generate_release_notes: true
+          body: |
+            ## Linux — recommended install
+
+            Download **`Abyss-X-*-linux.tar.gz`**, extract it, then run the installer:
+
+            ```bash
+            tar -xzf Abyss-X-*-linux.tar.gz
+            cd abyss-x-linux
+            ./install_abyss_x.sh
+            ```
+
+            It copies the AppImage to `~/.local/bin` (or system-wide with `sudo`) and
+            wires up the app icon and menu entry. Run the same script again anytime to
+            uninstall. A bare `*.AppImage` and a `.deb` are also attached below.
           files: dist/*
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}

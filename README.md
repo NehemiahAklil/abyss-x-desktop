@@ -61,6 +61,7 @@
 
 | Platform | File |
 |---|---|
+| Linux (installer, recommended) | `Abyss-X-*-linux.tar.gz` |
 | Linux (x64) | `Abyss-X-*-linux-x64.AppImage` |
 | Linux (arm64) | `Abyss-X-*-linux-arm64.AppImage` |
 | Linux (Debian/Ubuntu) | `Abyss-X-*-amd64.deb` |
@@ -68,7 +69,23 @@
 | macOS (Intel) | `Abyss-X-*-mac-x64.dmg` |
 | macOS (Apple Silicon) | `Abyss-X-*-mac-arm64.dmg` |
 
-#### Linux — AppImage
+#### Linux — installer script (recommended)
+
+The tarball bundles the AppImage with [`scripts/install_abyss_x.sh`](scripts/install_abyss_x.sh),
+an interactive installer that copies it to `~/.local/bin` (or system-wide with
+`sudo`), and adds a proper app-menu entry and icon pulled straight out of the
+AppImage — no separate icon asset to keep in sync.
+
+```bash
+tar -xzf Abyss-X-*-linux.tar.gz
+cd abyss-x-linux
+./install_abyss_x.sh
+```
+
+Follow the on-screen menu to choose "Just me" or "All users". Run the same
+script again anytime to uninstall.
+
+#### Linux — bare AppImage
 ```bash
 chmod +x Abyss-X-*.AppImage
 ./Abyss-X-*.AppImage
